@@ -27,6 +27,9 @@ export default async function ShortsPage(req: Request, ctx: RouteContext<any, St
   const error = new URL(req.url).searchParams.get("error");
   const shorts = await getShortsByUser(ctx.state.user!.login);
 
+  const url = new URL(req.url)
+  const hostname = `${url.protocol}//${url.host}`
+
   return (
     <div class="px-4 py-8 mx-auto">
       <div class="max-w-screen-md mx-auto flex flex-col items-center justify-center">
@@ -48,7 +51,7 @@ export default async function ShortsPage(req: Request, ctx: RouteContext<any, St
           <ul class="space-y-4">
             { shorts.map(short => 
               <li class="bg-white p-4 rounded-md shadow-md">
-                <Short short={short} />
+                <Short short={short} hostname={hostname} />
               </li>
             )}
           </ul>

@@ -4,9 +4,10 @@ import { ShortEntity } from "../utils/db.ts";
 
 interface ShortProps {
   short: ShortEntity,
+  hostname: string,
 }
 
-export default function Short({ short } : ShortProps) {
+export default function Short({ short, hostname } : ShortProps) {
   const [isView, setView] = useState<boolean>(false);
   const onDelete = async () => {
     await fetch("/account/myshorts", { method: "DELETE", credentials: "same-origin", body: JSON.stringify(short) });
@@ -18,10 +19,10 @@ export default function Short({ short } : ShortProps) {
         <div class="flex items-center space-x-4">
           <div>
             <p class="text-yellow-600 font-semibold">Short URL</p>
-            <p class="text-gray-600">http://localhost:8000/s/{short.shortUrl}</p>
+            <p class="text-gray-600">{hostname}/s/{short.shortUrl}</p>
           </div>
           <button 
-          onClick={() => navigator.clipboard.writeText(`http://localhost:8000/s/${short.shortUrl}`)}
+          onClick={() => navigator.clipboard.writeText(`${hostname}/s/${short.shortUrl}`)}
           class="text-yellow-600 hover:text-yellow-800 focus:outline-none">
             <IconCopy class="w-6 h-6" />
           </button>
