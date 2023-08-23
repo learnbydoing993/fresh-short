@@ -5,8 +5,8 @@
     "start": "deno run -A --watch=static/,routes/ --unstable dev.ts",
     "db:dump": "deno run --allow-read --allow-env --unstable tools/dump.ts",
     "db:reset": "deno run --allow-read --allow-env --unstable tools/reset_kv.ts",
-    "build": "deno run -A dev.ts build",
-    "preview": "deno run -A main.ts",
+    "build": "deno run -A --unstable dev.ts build",
+    "preview": "deno run -A --unstable main.ts",
     "update": "deno run -A -r https://fresh.deno.dev/update ."
   },
   "lint": {
