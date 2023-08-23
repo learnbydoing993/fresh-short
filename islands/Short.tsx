@@ -3,12 +3,15 @@ import { useState } from "preact/hooks";
 import { ShortEntity } from "../utils/db.ts";
 
 interface ShortProps {
-  short: ShortEntity;
+  short: ShortEntity,
 }
 
 export default function Short({ short } : ShortProps) {
   const [isView, setView] = useState<boolean>(false);
-
+  const onDelete = async () => {
+    await fetch("/account/myshorts", { method: "DELETE", credentials: "same-origin", body: JSON.stringify(short) });
+    window.location.reload();
+  }
   return (
     <>
       <div class="flex items-center justify-between ">
@@ -23,9 +26,15 @@ export default function Short({ short } : ShortProps) {
             <IconCopy class="w-6 h-6" />
           </button>
         </div>
-        <button onClick={() => setView(prevState => !prevState)} class="text-yellow-600 hover:underline">
-          View Original
-        </button>
+        <div>
+          <button onClick={() => setView(prevState => !prevState)} class="text-yellow-600 hover:underline m-3">
+            View Original
+          </button>
+          |
+          <button onClick={() => onDelete()} class="text-yellow-600 hover:underline m-3">
+            Delete
+          </button>
+        </div>
       </div>
 
       {isView ?

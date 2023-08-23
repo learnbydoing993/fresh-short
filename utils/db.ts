@@ -53,6 +53,18 @@ export async function createShort(short: ShortEntity) {
     if (!res.ok) throw new Error(`Failed to create short: ${short}`);
 }
 
+export async function deleteShort(short: ShortEntity) {
+  const shortsKey = ["shorts", short.shortUrl];
+  const shortsByUserKey = ["shorts_by_user", short.userLogin, short.shortUrl];
+
+  const res = await kv.atomic()
+    .delete(shortsKey)
+    .delete(shortsByUserKey)
+    .commit();
+
+  if (!res.ok) throw new Error(`Failed to delete short: ${short}`);
+}
+
 export async function getShort(shortUrl: string) {
   const shortKey = ["shorts", shortUrl];
   const resp = await kv.get<ShortEntity>(shortKey)

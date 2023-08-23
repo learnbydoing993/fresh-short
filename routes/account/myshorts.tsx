@@ -1,7 +1,7 @@
 // deno-lint-ignore-file
 import { Handlers, RouteContext } from "$fresh/server.ts";
 import Short from "../../islands/Short.tsx";
-import { getShortsByUser } from "../../utils/db.ts";
+import { ShortEntity, deleteShort, getShortsByUser } from "../../utils/db.ts";
 import { newShort } from "../../utils/helper.ts";
 import { State } from "../_middleware.ts";
 
@@ -12,6 +12,15 @@ export const handler: Handlers<any, State> = {
 
     return newShort(orginalUrl, ctx.state.user!.login);
   },
+
+  async DELETE(req, ctx) {
+    const short = await req.json() as ShortEntity
+    if (ctx.state.user!.login === short.userLogin) {
+      await deleteShort(short);
+    }
+    
+    return ctx.render();
+  }
 };
 
 export default async function ShortsPage(req: Request, ctx: RouteContext<any, State>) {
